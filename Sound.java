@@ -302,6 +302,16 @@ public class Sound {
     // - replace the current value with the new value
     // - refresh!
     public void fadeIn(double seconds) {
+        double multiplier = 0;
+        double adding = 1/(seconds*getSamplingRate());
+        int i = 0;
+        while(multiplier < 1){
+            myData.set(i,(int)(myData.get(i)*multiplier));
+            multiplier = multiplier + adding;
+            i++;
+        }
+        
+        
 
    
     }
