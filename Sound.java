@@ -229,9 +229,9 @@ public class Sound {
         int bottom = 0;
         int top = myData.size()-1;
         for(int i = 0; i<myData.size()/2;i++){
-        swap(top,bottom);
-        bottom++;
-        top--;
+            swap(top,bottom);
+            bottom++;
+            top--;
         }
         refresh();
     }
@@ -284,7 +284,7 @@ public class Sound {
      * This makes quiet sounds louder while preventing distortion.
      */
     public void normalize() {
-              double scalefactor = 32000/(findAbsoluteMax()*1.0);
+        double scalefactor = 32000/(findAbsoluteMax()*1.0);
         amplify(scalefactor);
         refresh();
 
