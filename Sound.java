@@ -226,20 +226,38 @@ public class Sound {
      * reverse the sound
      */
     public void reverse() {
-
-
+        int bottom = 0;
+        int top = myData.size()-1;
+        for(int i = 0; i<myData.size()/2;i++){
+        swap(top,bottom);
+        bottom++;
+        top--;
+        }
+        refresh();
     }
 
     // this throws out half the data
     public void doublePitch() {
-
+        ArrayList<Integer> s = new ArrayList<Integer>((myData.size()/2));
+        for (int i=0; i < s.size() ; i++) {
+            int n = myData.get(i*2);
+            s.set(i,  n);
+        }
+        myData.clear();
+        //myData = s;
+        for(Integer i: s)
+           myData.add(i);
+        refresh();
     }
 
 
   
     //complete this method
     public void amplify (double amt) {
-
+        for (int i = 0; i < myData.size(); i++) {
+            myData.set(i,(int)(myData.get(i)*amt));
+        }
+        refresh();
     }
 
     /*
@@ -247,19 +265,35 @@ public class Sound {
      * Used by normalize() to determine the scaling factor.
      */
     private int findAbsoluteMax() {
-  
+        int maxsofar = Math.abs(myData.get(0));
+        for(int i = 0; i < myData.size(); i++){
+            if(Math.abs(myData.get(i)) > maxsofar){
+                maxsofar = myData.get(i);
+            }
+        }
+        return maxsofar;
     }
-
+    public void swap(int index1, int index2){
+        int x = myData.get(index1);
+        myData.set(index1, myData.get(index2));
+        myData.set(index2, x);
+    }
     /*
      * Normalizes the audio by scaling all samples so the loudest sample
      * reaches the maximum amplitude (32767 for 16-bit audio) without clipping.
      * This makes quiet sounds louder while preventing distortion.
      */
     public void normalize() {
-
+              double scalefactor = 32000/(findAbsoluteMax()*1.0);
+        amplify(scalefactor);
+        refresh();
 
     }
-
+    public void setToIndex() {
+        for(int i =0; i < 32768; i++) {
+            myData.set(i, i);
+        }
+    }
 
     // Fade in over a duration in seconds
     // - get the number of samples you want to fade-in to full volume 
