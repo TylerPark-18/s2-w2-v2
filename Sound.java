@@ -319,7 +319,14 @@ public class Sound {
 
     // Fade out over a duration in seconds
     public void fadeOut(double seconds) {
-
+        double multiplier = 0;
+        double adding = 1/(seconds*getSamplingRate());
+        int i = myData.size()-1;
+        while(multiplier < 1){
+            myData.set(i,(int)(myData.get(i)*multiplier));
+            multiplier = multiplier + adding;
+            i--;
+        }
     }
 
 
@@ -328,11 +335,41 @@ public class Sound {
      * A square wave alternates between -max and +max.
      */
     public void setSquare(int hertz) {
-        int maxAmplitude = 25000;
-        // based on hertz: cycles per second
-        // cycle - is one complete wave 
-        // sampleRate() -- getSamplingRate() - samples per second
-        // You need to calculate the samplesPerCycle 
+        // int maxAmplitude = 25000;
+        // // based on hertz: cycles per second
+        // // cycle - is one complete wave 
+        // // sampleRate() -- getSamplingRate() - samples per second
+        // // You need to calculate the samplesPerCycle 
+        // // sampleRate/hertz = number of ints in a second
+        // int numberinarow = (int)(getSamplingRate()/hertz);
+        // int i = 0;
+        // int gottabeundernumberinarow = 0;
+        // int ifitsnegorpos = 0;
+        // while(i < myData.size()){
+        //     while(gottabeundernumberinarow < numberinarow){
+        //         if(i > myData.size()-1){
+        //             break;
+        //         }
+        //         if(ifitsnegorpos % 2 == 0)
+        //         myData.set(i,maxAmplitude);
+        //         else {
+        //             myData.set(i,-maxAmplitude);
+        //         }
+                
+        //         i++;
+        //         gottabeundernumberinarow++;
+
+        //     }
+        //     ifitsnegorpos++;
+        // }
+        int samplesPerCycle = (int)Math.round(getSamplingRate() / (double) hertz);
+int halfCycle = Math.max(1, samplesPerCycle / 2);
+int maxAmp = getMaxSampleValue();
+for (int i = 0; i < myData.size(); i++) {
+    int periodIndex = (i / halfCycle) % 2;
+    myData.set(i, periodIndex == 0 ? maxAmp : -maxAmp);
+}
+refresh();
 
     }
 
