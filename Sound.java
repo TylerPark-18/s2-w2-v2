@@ -335,7 +335,7 @@ public class Sound {
      * A square wave alternates between -max and +max.
      */
     public void setSquare(int hertz) {
-        // int maxAmplitude = 25000;
+        int maxAmplitude = 25000;
         // // based on hertz: cycles per second
         // // cycle - is one complete wave 
         // // sampleRate() -- getSamplingRate() - samples per second
@@ -359,17 +359,27 @@ public class Sound {
         //         i++;
         //         gottabeundernumberinarow++;
 
-        //     }
+        //     } 
         //     ifitsnegorpos++;
         // }
-        int samplesPerCycle = (int)Math.round(getSamplingRate() / (double) hertz);
-int halfCycle = Math.max(1, samplesPerCycle / 2);
-int maxAmp = getMaxSampleValue();
-for (int i = 0; i < myData.size(); i++) {
-    int periodIndex = (i / halfCycle) % 2;
-    myData.set(i, periodIndex == 0 ? maxAmp : -maxAmp);
-}
-refresh();
+        int row = (int)(getSamplingRate()/hertz);
+        int intinrow = 0;
+        int x= 0;
+        myData.set(0,maxAmplitude);
+        for(int i = 1; i < myData.size(); i++){
+            if(intinrow < row){
+                if(x % 2 == 0){
+                    myData.set(i,maxAmplitude);
+                } else {
+                    myData.set(i,-maxAmplitude);
+                }
+                intinrow ++;
+            } else {
+                x ++;
+                intinrow = 0;
+            }
+        }
+
 
     }
 
